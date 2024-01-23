@@ -9,7 +9,6 @@ import { signProps } from '../interfaces/sign';
 export const useSignInFormik = ({onError}: {onError?: any}) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    console.log(1)
     
     const formik = useFormik<signProps>({
         initialValues: {
@@ -21,10 +20,8 @@ export const useSignInFormik = ({onError}: {onError?: any}) => {
             .required('This field is required.'),
         }),
         onSubmit: async (values: any, {resetForm}) => {
-            console.log(2)
             try {
                 const response = await API.checkAccount(values)
-                console.log(values)
                 if(response.data.status === 401 || response.data.status === 404) {  
                     onError(response.data.message)
                 }else {

@@ -13,7 +13,6 @@ export const useUpdateProfileGroupFormik = ({onError, onResponse}: {onError?: an
   const abortSignal = abortController.signal
 
   const group = store.getState().groupSlice.group
-  console.log(group)
   const dispatch = useDispatch()
 
   const formik = useFormik<signProps>({
@@ -56,7 +55,6 @@ export const useUpdateProfileGroupFormik = ({onError, onResponse}: {onError?: an
       }
 
       const response = await API.updateProfileGroup(formData);
-      console.log('update:', response)
       if (response.data.status === 200) {
         onResponse(response.data.status)
         dispatch(getGroupDetail(response.data.data))

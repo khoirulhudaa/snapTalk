@@ -8,9 +8,6 @@ export const useChatFormik = ({onError, onResponse, type_chat, sender_id, recipi
   const abortController = new AbortController()
   const abortSignal = abortController.signal
 
-  console.log(1)
-
-
   const formik = useFormik<chatProps>({
     initialValues: {
       message: '',
@@ -33,7 +30,6 @@ export const useChatFormik = ({onError, onResponse, type_chat, sender_id, recipi
             }
             
             const response = await API.createChat(data);
-            console.log('chat:', response)
             if (response.data.status === 200) {
                 onResponse(response.data.status)
                 resetForm()

@@ -51,11 +51,7 @@ export const useGroupFormik = ({onError, onResponse}: {onError?: any, onResponse
         formData.append('logo', values.logo);
       }
 
-      console.log(values)
-
       const response = await API.createGroup(formData);
-      console.log(response)
-
       if (response.data.status === 200) {
         onResponse(response.data.status)
         resetForm()

@@ -41,12 +41,11 @@ const [showSidebar, setShowSidebar] = useState<boolean>(false)
 
 const auth = useSelector((state: any) => state.authSlice.auth)
 const chatContainerRef = useRef<any>(null);
-const socket = io('http://localhost:3600')
+const socket = io('https://be-snaptalk.vercel.app')
 
 useEffect(() => {
     socket.on('chat_received', (result) => {
         setStatus(true)
-        console.log('result chat new:', result)
     });
 
     return () => {
@@ -163,7 +162,6 @@ const handleActiveRemove = (active: boolean, index: number) => {
 
 const handleRemoveGroupFinally = async (group_id: string) => {
     const result = await API.removeGroup(group_id)
-    console.log(result)
     if(result.data.status === 200) {
         SweetAlert({
             text: 'Successfully delete group!',
@@ -252,7 +250,7 @@ return (
         <div className='relative w-screen flex h-screen'>
             
             {/* left  content */}
-            <div className={`fixed md:relative ${showSidebar ? 'left-[0%]' : 'left-[-100%]'} w-screen md:z-[1] z-[33] md:w-[30vw] border-r-[1px] border-white h-screen bg-white overflow-hidden`}>
+            <div className={`fixed md:relative ${showSidebar ? 'left-[0%]' : 'left-[-100%] md:left-[0%]'} w-screen md:z-[1] z-[33] md:w-[30vw] border-r-[1px] border-white h-screen bg-white overflow-hidden`}>
                 {/* profile */}
                 <div className='relaitve left-0 top-0 w-screen md:w-[30vw] bg-white'>
                     <div className='w-full bg-blue-400 px-4 py-[11px] flex items-center md:justify-between'>
@@ -272,8 +270,8 @@ return (
                             <div title='Create-group' onClick={() => setShowGroup(true)} className='text-[28px] relative top-[0.7px] cursor-pointer active:scale-[94%] hover:brightness-[94%]'>
                                 <FaUserFriends />
                             </div>
-                            <div className='mx-4'></div>
-                            <div title='SignOut' onClick={() => handleSignOut()} className='text-[25px] relative top-[0.7px] cursor-pointer active:scale-[94%] hover:brightness-[94%]'>
+                            <div className='mx-4 md:hidden'></div>
+                            <div title='SignOut' onClick={() => handleSignOut()} className='text-[25px] relative top-[0.7px] cursor-pointer active:scale-[94%] hover:brightness-[94%] md:hidden'>
                                 <FaSignOutAlt />
                             </div>
                         </div>
@@ -387,7 +385,7 @@ return (
                                 <p className='w-max-[80%] overflow-hidden overflow-ellipsis whitespace-nowrap font-normal text-white overflow-hidden overflow-ellipsis whitespace-nowrap w-[70%]'>{name ? name : null}</p>
                             </div>
                     }
-                    <div onClick={() => setShowSidebar(true)} className='rounded-full ml-auto text-white text-[22px] flex flex-col items-center justify-center cursor-pointer hover:brigntness-[94%] active:scale-[0.98] w-[50px] h-[50px]'>
+                    <div onClick={() => setShowSidebar(true)} className='rounded-full ml-auto text-white text-[22px] md:hidden flex flex-col items-center justify-center cursor-pointer hover:brigntness-[94%] active:scale-[0.98] w-[50px] h-[50px]'>
                         <div className='w-[30px] h-[2px] my-1 bg-white'></div>
                         <div className='w-[30px] h-[2px] my-1 bg-white'></div>
                         <div className='w-[30px] h-[2px] my-1 bg-white'></div>
@@ -401,7 +399,7 @@ return (
                 <div className='relative top-[80px] left-0 pb-[100px] overflow-y-auto w-full h-[90%]' ref={chatContainerRef}>
                     {
                         name === '' && photo === '' ? (
-                            <h2 className='text-center text-slate-400 top-[45%] relative font-bold text-[30px]'>Welcome at SnapTalk!</h2>
+                            <h2 className='text-center text-slate-400 top-[45%] relative font-bold text-[24px] md:text-[30px]'>Welcome at SnapTalk!</h2>
                         ):
                             <>
                             {
@@ -435,19 +433,20 @@ return (
                 </div>
 
                 {/* Input message (typing) */}
-                <div className='fixed px-2 md:px-6 bottom-0 md:right-0 z-[9] md:pb-0 pb-2 shadow-lg bg-white border-t-[1px] border-t-slate-200 w-screen md:w-[70vw] min-h-[12%] flex justify-center items-center'>
-                    <form onSubmit={(e) => sendMessage(e)} className='relative h-full flex w-full items-center'>
+                <div className='fixed px-2 md:px-6 bottom-0 md:right-0 z-[9] pb-2 shadow-lg bg-white border-t-[1px] border-t-slate-200 w-screen md:w-[70vw] min-h-[12%] flex justify-center items-center'>
+                    <form onSubmit={(e) => id !== '' ? sendMessage(e) : null} className='relative h-full flex w-full items-center'>
                         <div className='w-[92%] relative bottom-2'>
                             <InputField 
                                 id='message'
                                 name='message' 
+                                disabled={id === ''}
                                 typeInput='message'
                                 value={message} 
                                 onChange={(e: any) => setMessage(e.target.value)}
                                 placeholder='Type your message...' 
                             />
                         </div>
-                        <div onClick={(e) => sendMessage(e)} className='w-[50px] relative top-1 ml-3 h-[46px] md:h-[50px] rounded-full overflow-hidden cursor-pointer flex items-center justify-center text-[25px] bg-blue-400 text-white hover:brightness-[90%] active:scale-[0.98]'>
+                        <div onClick={(e) => id !== '' ? sendMessage(e) : null} className={`w-[50px] relative top-1 ml-3 h-[46px] md:h-[50px] rounded-full overflow-hidden ${id !== '' ? 'cursor-pointer hover:brightness-[90%] active:scale-[0.98]' : 'cursor-not-allowed'} flex items-center justify-center text-[25px] bg-blue-400 text-white`}>
                             <FaTelegram />
                         </div>
                     </form>

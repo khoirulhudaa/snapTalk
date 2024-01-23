@@ -7,7 +7,6 @@ import store from '../../store/store';
 export const useAddMember = ({onError, onResponse}: {onError?: any, onResponse?: any}) => {
     
     const group = store.getState().groupSlice.group
-    console.log('group:', group)
     
     const formik = useFormik<groupProps>({
         initialValues: {
@@ -26,10 +25,8 @@ export const useAddMember = ({onError, onResponse}: {onError?: any, onResponse?:
                     number_telephone: values.number_telephone
                 }
 
-                console.log('data', data)
 
                 const response = await API.addMember(data)
-                console.log(values)
                 if(response.data.status === 401 || response.data.status === 404) {  
                     onError(response.data.message)
                 }else {

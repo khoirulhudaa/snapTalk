@@ -2,7 +2,7 @@ import axios from "axios";
 import store from "../store/store";
 
 const api = axios.create({
-  baseURL: 'http://localhost:3600',
+  baseURL: 'https://be-snaptalk.vercel.app',
   headers: {
     "Content-Type": "application/json",
   }    
@@ -33,7 +33,6 @@ api.interceptors.request.use(async function (config) {
 // Tambahkan interceptor respons
 api.interceptors.response.use(function (response) {
   
-  console.log('response interceptors:', response)
   return response
 
 }, function (error) {

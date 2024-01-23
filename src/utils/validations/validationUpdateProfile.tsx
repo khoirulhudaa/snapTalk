@@ -56,7 +56,6 @@ export const useUpdateProfileFormik = ({onError, onResponse}: {onError?: any, on
       }
 
       const response = await API.updateProfile(formData);
-      console.log('update:', response)
       if (response.data.status === 200) {
         onResponse(response.data.status)
         dispatch(authSignIn(response.data.data))
