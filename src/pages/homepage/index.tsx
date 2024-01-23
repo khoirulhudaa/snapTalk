@@ -243,7 +243,6 @@ const setClear = () => {
     setShowDetail(false)
     setShowFriend(false)
     setShowGroup(false)
-    setStatus(true)
 }
 
 return (
@@ -326,8 +325,8 @@ return (
                                     }
                                     
                                     return filteredData.map((data: any, index: number) => (
-                                        <div key={index} onClick={() => handleSelectAccount((data?.type_account === 'personal' ? data?.photo_profile : data?.logo), data?.type_account, (data?.type_account === 'personal' ? data?.number_telephone : data?.group_id), (data?.type_account === 'personal' ? data?.username : data?.group_name), (data?.type_account === 'personal' ? data?.number_telephone : data?.group_number_telephone) )} className='relative w-[90%] cursor-pointer mx-auto h-[70px] border-b-[1px] overflow-hidden border-b-slate-100 flex items-center'>
-                                            <div className='rounded-full overflow-hidden flex items-center justify-center w-[40px] h-[40px] border border-slate-300 mr-3 hover:bg-blue-100 active:scale-[0.99]'>
+                                        <div key={index} className='relative w-[90%] cursor-pointer mx-auto h-[70px] border-b-[1px] overflow-hidden border-b-slate-100 flex items-center'>
+                                            <div onClick={() => handleSelectAccount((data?.type_account === 'personal' ? data?.photo_profile : data?.logo), data?.type_account, (data?.type_account === 'personal' ? data?.number_telephone : data?.group_id), (data?.type_account === 'personal' ? data?.username : data?.group_name), (data?.type_account === 'personal' ? data?.number_telephone : data?.group_number_telephone) )} className='rounded-full overflow-hidden flex items-center justify-center w-[40px] h-[40px] border border-slate-300 mr-3 hover:bg-blue-100 active:scale-[0.99]'>
                                                 <img src=
                                                     {
                                                         data?.type_account === 'personal' ? data?.photo_profile === null || data?.photo_profile === 'default.jpg' ? Default : data?.photo_profile :  
@@ -336,7 +335,7 @@ return (
                                                     alt="photo" 
                                                 />
                                             </div>
-                                            <p className='max-w-[70%] overflow-hidden overflow-ellipsis whitespace-nowrap hover:text-blue-400 active:scale-[0.99]'>
+                                            <p onClick={() => handleSelectAccount((data?.type_account === 'personal' ? data?.photo_profile : data?.logo), data?.type_account, (data?.type_account === 'personal' ? data?.number_telephone : data?.group_id), (data?.type_account === 'personal' ? data?.username : data?.group_name), (data?.type_account === 'personal' ? data?.number_telephone : data?.group_number_telephone) )} className='max-w-[70%] overflow-hidden overflow-ellipsis whitespace-nowrap hover:text-blue-400 active:scale-[0.99]'>
                                                 {data?.username ?? '(G) ' + data?.group_name}
                                             </p>
                                             {
