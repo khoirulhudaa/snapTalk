@@ -33,6 +33,7 @@ api.interceptors.request.use(async function (config) {
 // Tambahkan interceptor respons
 api.interceptors.response.use(function (response) {
   
+  console.log('response interceptors:', response)
   return response
 
 }, function (error) {
