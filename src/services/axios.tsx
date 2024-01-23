@@ -8,7 +8,6 @@ const api = axios.create({
   }    
 });
 
-// Fungsi untuk mengatur token dalam header permintaan Axios
 api.interceptors.request.use(async function (config) {
 
   // Ambil token dari store sesuai kebutuhan
@@ -39,9 +38,9 @@ api.interceptors.response.use(function (response) {
 
 }, function (error) {
 
-  // if (error.response.status === 403 || error) {
-  //   // window.location.pathname = '/'
-  // }
+  if (error.response.status === 403 || error.response.message == "You don't have access permissions.") {
+      window.location.pathname = '/'
+  }
   console.log("error interceptors new:", error)
 
   return Promise.reject(error);

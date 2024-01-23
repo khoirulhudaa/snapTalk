@@ -40,7 +40,7 @@ const [loadingMember, setLoadingMember] = useState<boolean>(false)
 const [showSidebar, setShowSidebar] = useState<boolean>(false)
 
 const auth = useSelector((state: any) => state.authSlice.auth)
-const chatContainerRef = useRef(null);
+const chatContainerRef = useRef<any>(null);
 const socket = io('http://localhost:3600')
 
 useEffect(() => {
