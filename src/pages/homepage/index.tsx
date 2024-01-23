@@ -46,6 +46,7 @@ const socket = io('https://be-snaptalk.vercel.app')
 useEffect(() => {
     socket.on('chat_received', (result) => {
         setStatus(true)
+        console.log(result)
     });
 
     return () => {
