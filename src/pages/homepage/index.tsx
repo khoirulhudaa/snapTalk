@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { FaChevronRight, FaEllipsisH, FaSignOutAlt, FaSpinner, FaTelegram, FaTimes, FaTrash, FaUserFriends, FaUserPlus } from 'react-icons/fa'
+import { FaChevronRight, FaSignOutAlt, FaSpinner, FaTelegram, FaTimes, FaTrash, FaUserFriends, FaUserPlus } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import io from 'socket.io-client'

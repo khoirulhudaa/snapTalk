@@ -3,10 +3,9 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import API from '../../services/api';
-import { authSignIn } from '../../store/authSlice';
+import { getGroupDetail } from '../../store/groupSlice';
 import store from '../../store/store';
 import { signProps } from '../interfaces/sign';
-import { getGroupDetail } from '../../store/groupSlice';
 
 export const useUpdateProfileGroupFormik = ({onError, onResponse}: {onError?: any, onResponse?: any}) => {
 

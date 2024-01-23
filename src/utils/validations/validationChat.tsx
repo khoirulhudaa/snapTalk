@@ -2,7 +2,6 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import API from '../../services/api';
 import { chatProps } from '../interfaces/chat';
-import socketIOClient from "socket.io-client";
 
 export const useChatFormik = ({onError, onResponse, type_chat, sender_id, recipient_id}: {onError?: any, onResponse?: any, type_chat?: string, sender_id?: string, recipient_id?: string}) => {
 
