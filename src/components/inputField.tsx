@@ -1,5 +1,3 @@
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
 import React from 'react';
 
 interface inputProps {
@@ -16,8 +14,6 @@ interface inputProps {
     onError?: string | undefined,
     onTouched?: boolean | undefined,
     disabled?: boolean,
-    datackEditor?: any,
-    onChangeCKEditor?: any
 }
 
 const InputField = React.forwardRef(({
@@ -34,8 +30,6 @@ const InputField = React.forwardRef(({
   onError,
   onTouched,
   disabled,
-  datackEditor,
-  onChangeCKEditor
 }: inputProps, ref: any) => {
     switch (typeInput) {
       case "select-input":
@@ -95,18 +89,6 @@ const InputField = React.forwardRef(({
                 ): null
             }
           </>
-        )
-    case "ckEditor":
-        return (
-            <>
-                <label htmlFor={id}>{label}</label>
-                <div className='h-3'></div>
-                <CKEditor
-                    editor={ClassicEditor}
-                    data={datackEditor}
-                    onChange={onChangeCKEditor}
-                />
-            </>
         )
     case "message":
         return (
