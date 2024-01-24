@@ -101,7 +101,7 @@ useEffect(() => {
         setRelations(result.data.data) 
         setStatus(false)
     })()
-}, [status, relations.length, id])
+}, [status, relations.length, id, channel])
 
 const handleShow = (e?: boolean) => {
     setShowFriend(e ?? false)
