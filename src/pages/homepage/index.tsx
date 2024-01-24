@@ -45,22 +45,27 @@ const ably = new Ably.Realtime('e87l2A.h1L5zQ:N2VQ6cUTikKzFtbVU2quPgMpxF2P4TCIZP
 const channel = ably.channels.get('chat');
 
 useEffect(() => {
-  channel.subscribe('chat_received', (message: any) => {
-    setStatus(true);
-    console.log(message);
-  });
-}, [channel]);
+    channel.subscribe('chat_received', (message: any) => {
+      setStatus(true);
+      console.log(message);
+    });
+  
+    return () => {
+      channel.unsubscribe('chat_received');
+    };
+  }, [channel]);
+  
 
-const sendMessage = (e: any) => {
-  e.preventDefault();
-  const data = {
-    message: message,
-    type_chat: typeSelect,
-    sender_id: auth?.number_telephone ?? '',
-    recipient_id: id,
-  };
-  channel.publish('chat', data);
-  setMessage('');
+const sendMessage = async (e: any) => {
+    e.preventDefault();
+    const data = {
+        message: message,
+        type_chat: typeSelect,
+        sender_id: auth?.number_telephone ?? '',
+        recipient_id: id,
+    };
+    channel.publish('chat', data);
+    setMessage('');
 };
 
 if (chatContainerRef.current) {
