@@ -41,7 +41,7 @@ const [showSidebar, setShowSidebar] = useState<boolean>(false)
 
 const auth = useSelector((state: any) => state.authSlice.auth)
 const chatContainerRef = useRef<any>(null);
-const socket = io('http://localhost:3600')
+const socket = io('https://be-snaptalk.vercel.app')
 
 useEffect(() => {
     socket.on('chat_received', (result) => {
