@@ -49,11 +49,6 @@ useEffect(() => {
     setStatus(true);
     console.log(message);
   });
-
-  return () => {
-    channel.unsubscribe('chat_received');
-    ably.close();
-  };    
 }, [channel]);
 
 const sendMessage = (e: any) => {

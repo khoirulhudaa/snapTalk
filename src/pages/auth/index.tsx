@@ -1,17 +1,29 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Human1, Human4 } from '../../assets/images'
 import ErrorMessage from '../../components/errorMessage'
 import InputField from '../../components/inputField'
 import { useSignInFormik } from '../../utils/validations/validationLogin'
 import { useSignUpFormik } from '../../utils/validations/validationRegister'
+import Ably from 'ably'
+
 const Auth = () => {
 
- const [error, setError] = useState<string>('')
- const [type, setType] = useState<boolean>(false)
+const [error, setError] = useState<string>('')
+const [type, setType] = useState<boolean>(false)
 
- const handleErrorMessage = (error: string) => {
+const ably = new Ably.Realtime('e87l2A.h1L5zQ:N2VQ6cUTikKzFtbVU2quPgMpxF2P4TCIZPN_d7gSBeE');
+const channel = ably.channels.get('chat');
+ 
+useEffect(() => {
+    return () => {
+        channel.unsubscribe('chat_received');
+        ably.close();
+      };    
+}, [])
+
+const handleErrorMessage = (error: string) => {
     setError(error)
- }
+}
 
  const hanleResponseMessage = (response: number) => {
   if(response === 200) setType(false)
