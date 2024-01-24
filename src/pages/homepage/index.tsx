@@ -40,7 +40,8 @@ const [showSidebar, setShowSidebar] = useState<boolean>(false)
 
 const auth = useSelector((state: any) => state.authSlice.auth)
 const chatContainerRef = useRef<any>(null);
-const ably = new Ably.Realtime('YOUR_ABLY_API_KEY');
+
+const ably = new Ably.Realtime('e87l2A.h1L5zQ:N2VQ6cUTikKzFtbVU2quPgMpxF2P4TCIZPN_d7gSBeE');
 const channel = ably.channels.get('chat');
 
 useEffect(() => {
