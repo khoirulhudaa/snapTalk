@@ -1,8 +1,8 @@
-import Ably from 'ably'
 import { useEffect, useRef, useState } from 'react'
 import { FaChevronRight, FaSignOutAlt, FaSpinner, FaTelegram, FaTimes, FaTrash, FaUserFriends, FaUserPlus } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import io from 'socket.io-client'
 import { Default, DefaultGroup } from '../../assets/images'
 import SweetAlert from '../../components/alertBox'
 import AlertFriend from '../../components/alertFriend'
@@ -13,7 +13,6 @@ import convertToHourMinute from '../../helpers/formatDate'
 import parseDate from '../../helpers/parseDate'
 import API from '../../services/api'
 import { getGroupDetail } from '../../store/groupSlice'
-import { useChatFormik } from '../../utils/validations/validationChat'
 
 const Homepage = () => {
 
@@ -41,29 +40,35 @@ const [showSidebar, setShowSidebar] = useState<boolean>(false)
 
 const auth = useSelector((state: any) => state.authSlice.auth)
 const chatContainerRef = useRef<any>(null);
-
-const ably = new Ably.Realtime({ key: 'e87l2A.h1L5zQ:N2VQ6cUTikKzFtbVU2quPgMpxF2P4TCIZPN_d7gSBeE' });
-const channel = ably.channels.get('chat');
+const socket = io('https://be-snaptalk.vercel.app')
 
 useEffect(() => {
-    channel.subscribe('chat', async (message: any) => {
-        const data = message.data;
-        console.log('Received chat message:', data);
+    socket.on('chat_received', (result) => {
         setStatus(true)
+        console.log(result)
     });
-}, [channel]);
+
+    return () => {
+        socket.disconnect();
+        setStatus(false)
+    };
+}, [socket]);
 
 if (chatContainerRef.current) {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
 }
 
-const handleResponseMessage = (response: any) => {
-    console.log(response)
+const sendMessage = (e: any) => {
+    e.preventDefault()
+    const data = {
+        message: message,
+        type_chat: typeSelect,
+        sender_id: auth?.number_telephone ?? '',
+        recipient_id: id
+    }
+    socket.emit('chat', data)
+    setMessage('')
 }
-
-const formikChat = useChatFormik({
-    onResponse: handleResponseMessage
-})
 
 useEffect(() => {
     (async () => {
@@ -204,7 +209,7 @@ const handleRemoveChatFinally = (chat_id?: string) => {
         type_chat: typeSelect,
         chat_id
     }
-    console.log(data)
+    socket.emit('chat_remove', data)
 }
 
 const handleRemoveChat = (chat_id?: string) => {
@@ -420,19 +425,19 @@ return (
 
                 {/* Input message (typing) */}
                 <div className='fixed px-2 md:px-6 bottom-0 md:right-0 z-[9] pb-2 shadow-lg bg-white border-t-[1px] border-t-slate-200 w-screen md:w-[70vw] min-h-[12%] flex justify-center items-center'>
-                    <form onSubmit={formikChat.handleSubmit} className='relative h-full flex w-full items-center'>
+                    <form onSubmit={(e) => id !== '' ? sendMessage(e) : null} className='relative h-full flex w-full items-center'>
                         <div className='w-[92%] relative bottom-2'>
                             <InputField 
                                 id='message'
                                 name='message' 
                                 disabled={id === ''}
                                 typeInput='message'
-                                value={formikChat.values.message} 
-                                onChange={formikChat.handleChange}
+                                value={message} 
+                                onChange={(e: any) => setMessage(e.target.value)}
                                 placeholder='Type your message...' 
                             />
                         </div>
-                        <div onClick={() => formikChat.handleSubmit} className={`w-[50px] relative top-1 ml-3 h-[46px] md:h-[50px] rounded-full overflow-hidden ${id !== '' ? 'cursor-pointer hover:brightness-[90%] active:scale-[0.98]' : 'cursor-not-allowed'} flex items-center justify-center text-[25px] bg-blue-400 text-white`}>
+                        <div onClick={(e) => id !== '' ? sendMessage(e) : null} className={`w-[50px] relative top-1 ml-3 h-[46px] md:h-[50px] rounded-full overflow-hidden ${id !== '' ? 'cursor-pointer hover:brightness-[90%] active:scale-[0.98]' : 'cursor-not-allowed'} flex items-center justify-center text-[25px] bg-blue-400 text-white`}>
                             <FaTelegram />
                         </div>
                     </form>
