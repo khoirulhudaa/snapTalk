@@ -40,7 +40,7 @@ const [showSidebar, setShowSidebar] = useState<boolean>(false)
 
 const auth = useSelector((state: any) => state.authSlice.auth)
 const chatContainerRef = useRef<any>(null);
-const socket = io('https://your-vercel-app.vercel.app', {
+const socket = io('https://be-snaptalk.vercel.app', {
     path: '/socket.io', // Make sure this matches with the server
 });
 
