@@ -53,7 +53,6 @@ useEffect(() => {
   return () => {
     channel.unsubscribe('chat_received');
     ably.close();
-    setStatus(false);
   };    
 }, [channel]);
 
@@ -203,7 +202,7 @@ const handleUpdateGroup = (group_id: string) => {
     const finalResult = relations
     .filter(data => data.type_account === 'group')
     .filter(data => data.group_id === group_id);
-    setMembers(finalResult[0].members)  
+    setMembers(finalResult[0].members ?? [])  
     dispatch(getGroupDetail(finalResult[0]))
 }
 
