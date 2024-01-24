@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { FaChevronRight, FaSignOutAlt, FaSpinner, FaTelegram, FaTimes, FaTrash, FaUserFriends, FaUserPlus } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import io from 'socket.io-client'
+import Ably from 'ably'
 import { Default, DefaultGroup } from '../../assets/images'
 import SweetAlert from '../../components/alertBox'
 import AlertFriend from '../../components/alertFriend'
@@ -40,37 +40,36 @@ const [showSidebar, setShowSidebar] = useState<boolean>(false)
 
 const auth = useSelector((state: any) => state.authSlice.auth)
 const chatContainerRef = useRef<any>(null);
-const socket = io('https://be-snaptalk.vercel.app', {
-    path: '/socket.io', // Make sure this matches with the server
-});
-
+const ably = new Ably.Realtime('YOUR_ABLY_API_KEY');
+const channel = ably.channels.get('chat');
 
 useEffect(() => {
-    socket.on('chat_received', (result) => {
-        setStatus(true)
-        console.log(result)
-    });
+  channel.subscribe('chat_received', (message: any) => {
+    setStatus(true);
+    console.log(message);
+  });
 
-    return () => {
-        socket.disconnect();
-        setStatus(false)
-    };
-}, [socket]);
+  return () => {
+    channel.unsubscribe('chat_received');
+    ably.close();
+    setStatus(false);
+  };
+}, [channel]);
+
+const sendMessage = (e: any) => {
+  e.preventDefault();
+  const data = {
+    message: message,
+    type_chat: typeSelect,
+    sender_id: auth?.number_telephone ?? '',
+    recipient_id: id,
+  };
+  channel.publish('chat', data);
+  setMessage('');
+};
 
 if (chatContainerRef.current) {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-}
-
-const sendMessage = (e: any) => {
-    e.preventDefault()
-    const data = {
-        message: message,
-        type_chat: typeSelect,
-        sender_id: auth?.number_telephone ?? '',
-        recipient_id: id
-    }
-    socket.emit('chat', data)
-    setMessage('')
 }
 
 useEffect(() => {
@@ -212,7 +211,7 @@ const handleRemoveChatFinally = (chat_id?: string) => {
         type_chat: typeSelect,
         chat_id
     }
-    socket.emit('chat_remove', data)
+    // socket.emit('chat_remove', data)
 }
 
 const handleRemoveChat = (chat_id?: string) => {
