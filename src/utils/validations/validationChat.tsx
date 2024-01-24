@@ -30,13 +30,14 @@ export const useChatFormik = ({onError, onResponse, type_chat, sender_id, recipi
             }
             
             const response = await API.createChat(data);
-            if (response.data.status === 200) {
-                onResponse(response.data.status)
-                resetForm()
-            } else {
-                onError(response.data.message)
-                resetForm()
-            }
+            console.log('response chat ably:', response)
+            // if (response.data.status === 200) {
+            //     onResponse(response.data.status)
+            //     resetForm()
+            // } else {
+            //     onError(response.data.message)
+            //     resetForm()
+            // }
         
         } catch (error: any) {
             onError(error.message)

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
+    "ably": "^1.2.48",
     "axios": "^1.6.3",
     "formik": "^2.4.5",
     "react": "^18.2.0",

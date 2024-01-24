@@ -47,7 +47,7 @@ const API = {
 
     // Chat
     createChat: (body: any) => {
-        return api.post('/chat', body)
+        return api.post('/send-chat', body)
     },
     getAllChatPersonal: (body: any) => {
         console.log('personal:',body)
@@ -57,7 +57,7 @@ const API = {
         return api.post(`/chat/messageGroup/${group_id}`)
     },
     removeChat: (body: any) => {
-        return api.post('/chat/remove', body)
+        return api.post('/chat_remove', body)
     }
 
 }
