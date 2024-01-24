@@ -36,7 +36,6 @@ const [relations, setRelations] = useState<any[]>([])
 const [chats, setChats] = useState<any[]>([])
 const [members, setMembers] = useState<any[]>([])
 const [loading, setLoading] = useState<boolean>(false)
-const [loadingMember, setLoadingMember] = useState<boolean>(false)
 const [showSidebar, setShowSidebar] = useState<boolean>(false)
 
 const auth = useSelector((state: any) => state.authSlice.auth)
@@ -75,7 +74,6 @@ useEffect(() => {
     (async () => {
         const result = await API.getAllRelationship(auth.number_telephone)   
         if(id && typeSelect) {
-            setLoadingMember(true)
             const data = {
                 sender: auth.number_telephone ?? '',
                 recipient: id ?? ''
@@ -98,7 +96,6 @@ useEffect(() => {
             setMembers(finalResult[0].members)  
             dispatch(getGroupDetail(finalResult[0]))
         }
-        setLoadingMember(false)
         setRelations(result.data.data) 
         setStatus(false)
     })()
@@ -295,12 +292,6 @@ return (
                 <div className='w-full h-full pb-[190px] mt-2 overflow-y-auto'>
                     <div className='h-max overflow-y-auto'>
                         {
-                            loadingMember ? (
-                                <div className='w-full h-full flex flex-col justify-center items-center text-center mt-10'>
-                                    <FaSpinner className='animate-spin duration-300 text-[24px]' />
-                                    <p className='mt-7'>Get contacts...</p>
-                                </div>
-                            ):
                             relations && relations.length > 0 ? (
                                 (() => {
                                     const filteredData = relations.filter((data: any) => {
