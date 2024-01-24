@@ -45,13 +45,15 @@ const ably = new Ably.Realtime('e87l2A.h1L5zQ:N2VQ6cUTikKzFtbVU2quPgMpxF2P4TCIZP
 const channel = ably.channels.get('chat');
 
 useEffect(() => {
-    channel.subscribe('chat_received', (message: any) => {
+    channel.subscribe('chat_received', () => {
       setStatus(true);
-      console.log(message);
     });
-  
+    
+    setStatus(true);
     return () => {
-      channel.unsubscribe('chat_received');
+        channel.unsubscribe('chat_received');
+        channel.unsubscribe('chat');
+        setStatus(false);
     };
   }, [channel]);
   
@@ -65,6 +67,7 @@ const sendMessage = async (e: any) => {
         recipient_id: id,
     };
     channel.publish('chat', data);
+    channel.unsubscribe('chat');
     setMessage('');
 };
 
@@ -101,7 +104,7 @@ useEffect(() => {
         setRelations(result.data.data) 
         setStatus(false)
     })()
-}, [status, relations.length, id, channel])
+}, [status, relations.length, id])
 
 const handleShow = (e?: boolean) => {
     setShowFriend(e ?? false)
