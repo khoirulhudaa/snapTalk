@@ -54,7 +54,7 @@ useEffect(() => {
     channel.unsubscribe('chat_received');
     ably.close();
     setStatus(false);
-  };
+  };    
 }, [channel]);
 
 const sendMessage = (e: any) => {
@@ -212,7 +212,7 @@ const handleRemoveChatFinally = (chat_id?: string) => {
         type_chat: typeSelect,
         chat_id
     }
-    // socket.emit('chat_remove', data)
+    channel.publish('chat_remove', data);
 }
 
 const handleRemoveChat = (chat_id?: string) => {
