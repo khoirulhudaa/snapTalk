@@ -59,7 +59,7 @@ const sendMessage = (e: any) => {
     sender_id: auth?.number_telephone ?? '',
     recipient_id: id,
   };
-  channel.publish('chat', data);
+  channel.publish('send_chat', data);
   setMessage('');
 };
 
