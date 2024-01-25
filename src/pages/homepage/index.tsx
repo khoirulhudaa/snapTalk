@@ -92,7 +92,7 @@ useEffect(() => {
         setRelations(result.data.data) 
         setStatus(false)
     })()
-}, [status, relations.length, id])
+}, [status, channel, relations.length, id])
 
 if (chatContainerRef.current) {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
