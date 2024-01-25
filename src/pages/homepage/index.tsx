@@ -59,7 +59,7 @@ const sendMessage = (e: any) => {
     sender_id: auth?.number_telephone ?? '',
     recipient_id: id,
   };
-  channel.publish('send_chat', data);
+  channel.publish('chat', data);
   setMessage('');
 };
 
@@ -92,7 +92,7 @@ useEffect(() => {
         setRelations(result.data.data) 
         setStatus(false)
     })()
-}, [status, channel, relations.length, id])
+}, [status, relations.length, id])
 
 if (chatContainerRef.current) {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
