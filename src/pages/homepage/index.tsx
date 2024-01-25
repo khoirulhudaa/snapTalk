@@ -63,10 +63,6 @@ const sendMessage = (e: any) => {
   setMessage('');
 };
 
-if (chatContainerRef.current) {
-    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-}
-
 useEffect(() => {
     (async () => {
         const result = await API.getAllRelationship(auth.number_telephone)   
@@ -97,6 +93,10 @@ useEffect(() => {
         setStatus(false)
     })()
 }, [status, relations.length, id])
+
+if (chatContainerRef.current) {
+    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+}
 
 const handleShow = (e?: boolean) => {
     setShowFriend(e ?? false)
