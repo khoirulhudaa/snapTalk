@@ -45,14 +45,15 @@ const ably = new Ably.Realtime('e87l2A.h1L5zQ:N2VQ6cUTikKzFtbVU2quPgMpxF2P4TCIZP
 const channel = ably.channels.get('chat');
 
 useEffect(() => {
-  channel.subscribe('chat_received', () => {
-    setStatus(true);
-
-    if (chatContainerRef.current) {
-        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-    }
-  });
-}, [channel]);
+    channel.subscribe('chat_received', (message: any) => {
+        setStatus(true);
+        console.log('1', message);
+    });
+      
+    channel.subscribe('error', (error) => {
+    console.error('Ably error:', error);
+    });
+  }, [channel]);
 
 const sendMessage = (e: any) => {
   e.preventDefault();
@@ -70,6 +71,7 @@ useEffect(() => {
     (async () => {
         const result = await API.getAllRelationship(auth.number_telephone)   
         if(id && typeSelect) {
+            console.log(status)
             const data = {
                 sender: auth.number_telephone ?? '',
                 recipient: id ?? ''
@@ -89,8 +91,12 @@ useEffect(() => {
             const finalResult = relations
             .filter(data => data.type_account === 'group')
             .filter(data => data.group_id === id);
-            setMembers(finalResult[0].members)  
-            dispatch(getGroupDetail(finalResult[0]))
+        
+            if (finalResult.length > 0 && finalResult[0].members) {
+                setMembers(finalResult[0].members);
+                dispatch(getGroupDetail(finalResult[0]));
+            }
+        
         }
         setRelations(result.data.data) 
         setStatus(false)
