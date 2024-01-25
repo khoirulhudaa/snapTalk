@@ -45,9 +45,12 @@ const ably = new Ably.Realtime('e87l2A.h1L5zQ:N2VQ6cUTikKzFtbVU2quPgMpxF2P4TCIZP
 const channel = ably.channels.get('chat');
 
 useEffect(() => {
-  channel.subscribe('chat_received', (message: any) => {
+  channel.subscribe('chat_received', () => {
     setStatus(true);
-    console.log(message);
+
+    if (chatContainerRef.current) {
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
   });
 }, [channel]);
 
